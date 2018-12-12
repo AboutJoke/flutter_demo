@@ -19,11 +19,11 @@ class MyApp extends StatelessWidget {
 //        ),
 //      ),
 
-      title: 'Startup Name Generator',
+      title: 'Startup Name Generator', //标题名称
       theme: new ThemeData(
-        primaryColor: Colors.blueGrey,
+        primaryColor: Colors.blueGrey, // 主题色
       ),
-      home: new RandomWords(),
+      home: new RandomWords(), //首页路由
     );
   }
 }
@@ -126,6 +126,20 @@ class RandomWordsState extends State<RandomWords> {
           return new Scaffold(
             appBar: new AppBar(
               title: new Text('Saved Suggestions'),
+              actions: <Widget>[
+                FlatButton( // i`m just lucky i study english just for fun [^] but cut love done
+                  child: Text("open new route"),//early dirty hurt urgent I`m working on it/ we have 30 minutes to kill [ə]
+                  textColor: Colors.blue,
+                  onPressed: () {
+                    //导航到新路由
+                    Navigator.push( context,
+                        new MaterialPageRoute(builder: (context) {
+                          return new NewRoute(); //eager teacher whatever sure  over my dead body I`m all ears [ə]
+                        }));//america suppose famous china and america should work together /have you thought about staying home? [ə]
+//                    Navigator.pushNamed(context, "new_page");//[ a] calm chicago  father  like father ,like son / calm down there`s nothing to worry about
+                  },
+                ),
+              ],
             ),
             body: new ListView(children: divided),
           );
@@ -134,3 +148,134 @@ class RandomWordsState extends State<RandomWords> {
     );
   }
 }
+
+class NewRoute extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return new MaterialApp(
+        title: 'Flutter Demo',
+        theme: new ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        routes: {
+          "new_page": (context) => NewRoute(),
+        },
+      home: ParentWidget(),
+//        home: new Scaffold(
+//          appBar: new AppBar(
+//            title: new Text("is a new route page"),
+//          ),
+//          body: Center(
+//            child: new Text("page 2"),
+//          ),
+//        )
+    );
+  }
+}
+
+///
+/// Widget管理自身状态
+///
+class TapBoxA extends StatefulWidget{
+  @override
+//  State<StatefulWidget> createState() {
+//    return _TapboxAState();
+//  }
+
+  createState() => new _TapboxAState();
+}
+
+class _TapboxAState extends State<TapBoxA> {
+  bool _active = false;
+
+  void _handleTap() {
+    setState(() {
+      _active = !_active;
+    });
+  }
+
+  Widget build(BuildContext context) {
+    return new GestureDetector(
+      onTap: _handleTap,
+      child: new Container(
+        child: new Center(
+          child: new Text(
+            _active ? 'Active' : 'Inactive',
+            style: new TextStyle(fontSize: 32.0, color: Colors.white),
+          ),
+        ),
+        width: 200.0,
+        height: 200.0,
+        decoration: new BoxDecoration(
+          color: _active ? Colors.lightGreen[700] : Colors.grey[600],
+        ),
+      ),
+    );
+  }
+}
+
+///
+/// 父widget管理子widget的state
+///
+class ParentWidget extends StatefulWidget{
+  @override
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    return _ParentWidget();
+  }
+}
+
+class _ParentWidget extends State<ParentWidget>{
+  bool _active = false;
+
+  void _handleTapBoxChanged(bool newValue){
+    setState(() {
+      _active = newValue;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return new Container(
+      child: new TapBoxB(
+        active: _active,
+        onChanged: _handleTapBoxChanged,
+      ),
+    );
+  }
+
+}
+
+class TapBoxB extends StatelessWidget {
+  TapBoxB({Key key, this.active: false, @required this.onChanged})
+      : super(key: key);
+
+  final bool active;
+  final ValueChanged<bool> onChanged;
+
+  void _handleTap() {
+    onChanged(!active);
+  }
+
+  Widget build(BuildContext context) {
+    return new GestureDetector(
+      onTap: _handleTap,
+      child: new Container(
+        child: new Center(
+          child: new Text(
+            active ? 'Active' : 'Inactive',
+            style: new TextStyle(fontSize: 32.0, color: Colors.white),
+          ),
+        ),
+        width: 200.0,
+        height: 200.0,
+        decoration: new BoxDecoration(
+          color: active ? Colors.lightGreen[700] : Colors.grey[600],
+        ),
+      ),
+    );
+  }
+}
+
+
